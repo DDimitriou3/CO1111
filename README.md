@@ -1,2 +1,5 @@
 # CO1111
-A team to create a quiz game.
+The Computing Challenge project page
+
+## Log entry for worksheet 01|
+Familiarizing with Git and Github. Cool stuff!
