@@ -1,0 +1,107 @@
+/*All style the body*/
+body{
+    font-family: Arial;
+    font-size: 18px;
+}
+/*Style my headers*/
+h1{
+    text-align: center;
+    font-size: 24px;
+    text-decoration: underline;
+    font-weight: bold;
+
+}
+h2{
+    text-align: center;
+    font-size: 24px;
+    text-decoration: underline;
+}
+h3{
+    text-align: center;
+    font-size: 24px;
+    text-decoration: underline;
+}
+/*Style the Pages */
+.home{
+    background-image: url("picture.jpg") ;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.help{
+    background-image: url("picture.jpg") ;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.welcome {
+    background-image:url("picture.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.about{
+    background-image:url("picture.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+p{
+    text-align: left;
+    font-weight: bold;
+    text-decoration: underline;
+
+}
+
+p1{
+    text-align: left;
+    font-weight: bold;
+}
+p2{
+
+}
+p3{
+    text-align:left;
+    font-weight: bold;
+
+}
+
+p4{
+    text-align: left;
+    font-weight: bold;
+}
+p5{ text-align: left;
+
+
+}
+
+#mySearch {
+    width: 100%;
+    font-size: 18px;
+    padding: 11px;
+    border: 1px solid #ddd;
+}
+
+/* Style the navigation menu */
+#myMenu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Style the navigation links */
+#myMenu li a {
+    padding: 12px;
+    text-decoration: none;
+    color: black;
+    display: block
+}
+
+#myMenu li a:hover {
+    background-color: #eee;
+}
+
+.fling-minislide {width:100%; height:0px; padding-bottom: 50%; overflow:hidden; position:relative; }
+.fling-minislide img{ position:absolute; animation:fling-minislide 20s infinite; opacity:0; width: 100%; height: auto;}
+
+@keyframes fling-minislide {25%{opacity:1;} 40%{opacity:0;}}
+.fling-minislide img:nth-child(4){animation-delay:0s;}
+.fling-minislide img:nth-child(3){animation-delay:5s;}
+.fling-minislide img:nth-child(2){animation-delay:10s;}
+.fling-minislide img:nth-child(1){animation-delay:15s;}
