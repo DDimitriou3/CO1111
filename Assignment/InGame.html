@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="JavaScript" href="JavaScript.js"/>
+    <title>In Game</title>
+</head>
+
+
+<body>
+
+<div id="StartGame">
+
+</div>
+
+
+<p style="text-align: center" id="Question">Loading...</p>
+
+<br/>
+
+<form id="answerForm" style="text-align: center">
+
+</form>
+
+
+<p style="text-align: center"><button id="submitButton" onclick="checkAnswer()">Confirm</button></p>
+
+
+
+<script>
+
+    const appName = "Straw-Hats Treasure Adventure";
+
+    let username;
+    let ValidUsername = false;
+
+    while(!ValidUsername)
+    {
+        username = prompt("What is your username?", "");
+
+        if(username == null || username === "")
+        {
+            alert("please enter a valid username");
+        }
+
+        else
+        {
+            ValidUsername = true;
+        }
+    }
+
+    fetch("https://codecyprus.org/th/api/start?player=" + username + "&app=" + appName + "-app&treasure-hunt-id=" + getCookie("uuid" + [0]))
+        .then(response => response.json())
+        .then(jsonObject =>
+        {
+
+            let sessionCode = jsonObject.session;
+
+            fetch("https://codecyprus.org/th/api/question?session=" + sessionCode)
+                .then(response => response.json())
+                .then(jsonObject => {
+
+                    console.log(jsonObject);
+
+                    questionType = jsonObject.questionType;
+
+
+                    document.getElementById("Question").innerHTML = jsonObject.questionText;
+
+
+                    let answer = "";
+
+                    if (questionType === "INTEGER")
+                    {
+                        answer = "";
+                        answer = "<input type='number' name='Answer'>"
+                    }
+
+                    if (questionType === "BOOLEAN")
+                    {
+                        answer = "";
+                        answer = "<input type='checkbox' name='Answer'>"
+                    }
+
+                    if (questionType === "NUMERIC")
+                    {
+                        answer = "";
+                        answer = "<input type='number' name='Answer'>"
+                    }
+
+                    if (questionType === "MCQ")
+                    {
+                        answer = "";
+                        answer = "<input type='checkbox' name='Answer'>"
+                    }
+
+                    if (questionType === "TEXT")
+                    {
+                        answer = "";
+                        answer = "<input type='text' name='Answer'>"
+                    }
+
+                    document.getElementById("answerForm").innerHTML = answer;
+
+
+
+                });
+
+        });
+
+    function getCookie(cookieName)
+    {
+        let name = cookieName + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+ function checkAnswer(input)
+ {
+
+ }
+
+</script>
+
+</body>
+
+
+</html>

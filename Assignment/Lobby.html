@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="JavaScript" href="JavaScript.js"/>
+
+    <title>Lobby</title>
+</head>
+
+
+
+<body>
+
+    <h1 style="text-align: center"><b>List of Treasure Hunts</b></h1>
+
+
+
+
+    <ul style='list-style:none'>
+
+        <li id="treasureHunts" style="text-align: center">Loading...</li>
+
+    </ul>
+
+
+<script>
+
+    function saveCookie(cookieName, cookieValue)
+    {
+        let date = new Date();
+        let expireHours = 30;
+        date.setTime(date.getTime() + (expireHours * 60 * 60 * 1000));
+        let expires = "expires=" + date.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires;
+    }
+
+    fetch("https://codecyprus.org/th/api/list")
+        .then(response => response.json())
+        .then(jsonObject =>
+        {
+
+            console.log(jsonObject);
+
+            let treasureHuntsArray = jsonObject.treasureHunts;
+
+            let list = "";
+
+            for (let i=0; i<treasureHuntsArray.length; i++)
+            {
+
+                saveCookie("uuid" +[i], treasureHuntsArray[i].uuid );
+
+                list += "<li>" +
+                    treasureHuntsArray[i].name + "<br/>" +
+                    "<a href='InGame.html'><button id='button'>Join Server" + [i+1] +"</button></a>" +
+                    "</li>";
+
+            }
+
+            document.getElementById("treasureHunts").innerHTML = list;
+
+
+        });
+
+
+
+</script>
+
+
+</body>
+
+
+
+</html>

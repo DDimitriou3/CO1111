@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard</title>
+</head>
+<body>
+
+
+<h1 id="TreasureHuntName">Treasure Hunt Name</h1>
+
+    <table id="leaderboardTable" style="border: 1px solid black">
+
+        <tr>
+            <th>Player</th>
+            <th>Score</th>
+            <th>Completion Time</th>
+        </tr>
+
+        <tr>
+            <td></td>
+        </tr>
+
+    </table>
+
+    <script>
+
+        const titleElement = document.getElementById("TreasureHuntName");
+        const leaderboardTableElement = document.getElementById("leaderboardTable");
+
+        fetch("https://codecyprus.org/th/test-api/leaderboard?sorted&size=10")
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+
+
+                titleElement.innerText = jsonObject.treasureHuntName;
+                const leaderboardArray = jsonObject.leaderboard;
+
+                let tableContents = "";
+
+                for (let i=0; i<leaderboardArray.length; i++)
+                {
+                    const entry = leaderboardArray[i];
+                    const playerName = entry.player;
+                    const score = entry.score;
+                    const completionTime = entry.completionTime;
+
+                    tableContents += "<tr>" +
+                        "<td>" + playerName + "</td>" +
+                        "<td>" + score + "</td>" +
+                        "<td>" + completionTime + "</td>" +
+                        "</tr>"
+                }
+
+                leaderboardTableElement.innerHTML += tableContents;
+
+            });
+
+    </script>
+
+</body>
+</html>
