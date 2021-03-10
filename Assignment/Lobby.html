@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Lobby</title>
 </head>
 
@@ -26,13 +25,22 @@
 
 <script>
 
-    function saveCookie(cookieName, cookieValue)
+    let username;
+    let ValidUsername = false;
+
+    while(!ValidUsername)
     {
-        let date = new Date();
-        let expireHours = 30;
-        date.setTime(date.getTime() + (expireHours * 60 * 60 * 1000));
-        let expires = "expires=" + date.toUTCString();
-        document.cookie = cookieName + "=" + cookieValue + ";" + expires;
+        username = prompt("What is your username?", "");
+
+        if(username == null || username === "")
+        {
+            alert("please enter a valid username");
+        }
+
+        else
+        {
+            ValidUsername = true;
+        }
     }
 
     fetch("https://codecyprus.org/th/api/list")
@@ -49,11 +57,10 @@
             for (let i=0; i<treasureHuntsArray.length; i++)
             {
 
-                saveCookie("uuid" +[i], treasureHuntsArray[i].uuid );
 
                 list += "<li>" +
                     treasureHuntsArray[i].name + "<br/>" +
-                    "<a href='InGame.html'><button id='button'>Join Server" + [i+1] +"</button></a>" +
+                    "<a href='Start.html?uuid="+ treasureHuntsArray[i].uuid +"&username= "+ username +"'><button id='button'>Join Server" + [i+1] +"</button></a>" +
                     "</li>";
 
             }

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="instascan" href="instascan.min.js"/>
+    <link rel="stylesheet" href="Stylesheet.css"/>
     <title>In Game</title>
 </head>
 
@@ -20,93 +22,330 @@
 
 <form id="answerForm" style="text-align: center">
 
+    <div id="IntegerQuestion" style="display: none">
+        <input type='number' id='inputInt' name='Answer'> <br><br>
+        <button type='button' id='submitButtonInt' onclick='saveAnswerInt()'>Confirm</button>
+    </div>
+
+    <div id="BooleanQuestion" style="display: none">
+        <input type='checkbox' id='inputBool' name='Answer'> <br><br>
+        <button type='button' id='submitButtonBool' onclick='saveAnswerBool()'>Confirm</button>
+    </div>
+
+    <div id="NumericQuestion" style="display: none">
+        <input type='number' id='inputNum' name='Answer'> <br><br>
+        <button type='button' id='submitButtonNum' onclick='saveAnswerNum()'>Confirm</button>
+    </div>
+
+    <div id="MCQuestion" style="display: none">
+        <input type='checkbox' id='inputMCA' name='Answer'> A <br>
+        <input type='checkbox' id='inputMCB' name='Answer'> B <br>
+        <input type='checkbox' id='inputMCC' name='Answer'> C <br>
+        <input type='checkbox' id='inputMCD' name='Answer'> D <br><br>
+        <button type='button' id='submitButtonMC' onclick='saveAnswerMC()'>Confirm</button>
+    </div>
+
+    <div id="TextQuestion" style="display: none">
+        <input type='text' id='inputTxt' name='Answer'> <br><br>
+        <button type='button' id='submitButtonTxt' onclick='saveAnswerText()'>Confirm</button>
+    </div>
+
+    <div id="end" style="display: none">
+        <p>Treasure Hunt Completed!</p>
+    </div>
 </form>
 
 
-<p style="text-align: center"><button id="submitButton" onclick="checkAnswer()">Confirm</button></p>
+<br><br>
+<p id="score" style="text-align: center">Score: 0</p>
 
+<br><br>
 
+<div id="skip" style="display: none">
+    <button type='button' id='skipButton' onclick='skipQuestion()'>Skip</button>
+</div>
 
-<script>
+<video id="preview"></video>
 
-    const appName = "Straw-Hats Treasure Adventure";
+<script src="instascan.min.js">
 
-    let username;
-    let ValidUsername = false;
+    let opts = {
+        // Whether to scan continuously for QR codes. If false, use scanner.scan() to
+        // manually scan. If true, the scanner emits the "scan" event when a QR code is
+        // scanned. Default true.
+        continuous: true,
+        // The HTML element to use for the camera's video preview. Must be a <video>
+        // element. When the camera is active, this element will have the "active" CSS
+        // class, otherwise, it will have the "inactive" class. By default, an invisible
+        // element will be created to host the video.
+        video: document.getElementById('preview'),
+        // Whether to horizontally mirror the video preview. This is helpful when trying to
+        // scan a QR code with a user-facing camera. Default true.
+        mirror: true,
+        // Whether to include the scanned image data as part of the scan result. See the
+        // "scan" event for image format details. Default false.
+        captureImage: false,
+        // Only applies to continuous mode. Whether to actively scan when the tab is not
+        // active.
+        // When false, this reduces CPU usage when the tab is not active. Default true.
+        backgroundScan: true,
+        // Only applies to continuous mode. The period, in milliseconds, before the same QR
+        // code will be recognized in succession. Default 5000 (5 seconds).
+        refractoryPeriod: 5000,
+        // Only applies to continuous mode. The period, in rendered frames, between scans. A
+        // lower scan period increases CPU usage but makes scan response faster.
+        // Default 1 (i.e. analyze every frame).
+        scanPeriod: 1
+    };
 
-    while(!ValidUsername)
+    let scanner = new Instascan.Scanner(opts);
+
+    let questionType;
+
+    getQuestion();
+
+    function getQuestion ()
     {
-        username = prompt("What is your username?", "");
+        fetch("https://codecyprus.org/th/api/question?session=" + getCookie("session"))
+            .then(response => response.json())
+            .then(jsonObject => {
 
-        if(username == null || username === "")
+                if (jsonObject.completed)
+                {
+                    window.location.href = "Leaderboard.html";
+                }
+
+                if (!(jsonObject.completed))
+                {
+                    setInterval(getLocation, 10000);
+
+                    questionType = jsonObject.questionType;
+
+                    document.getElementById("Question").innerHTML = jsonObject.questionText;
+
+                    if (jsonObject.canBeSkipped)
+                    {
+                        document.getElementById("skip").style.display = "block";
+                    }
+
+                    if (!(jsonObject.canBeSkipped))
+                    {
+                        document.getElementById("skip").style.display = "none";
+                    }
+
+                    if (questionType === "INTEGER") {
+                        document.getElementById("IntegerQuestion").style.display = "block";
+                        document.getElementById("BooleanQuestion").style.display = "none";
+                        document.getElementById("NumericQuestion").style.display = "none";
+                        document.getElementById("MCQuestion").style.display = "none";
+                        document.getElementById("TextQuestion").style.display = "none";
+                    }
+
+                    if (questionType === "BOOLEAN") {
+                        document.getElementById("IntegerQuestion").style.display = "none";
+                        document.getElementById("BooleanQuestion").style.display = "block";
+                        document.getElementById("NumericQuestion").style.display = "none";
+                        document.getElementById("MCQuestion").style.display = "none";
+                        document.getElementById("TextQuestion").style.display = "none";
+                    }
+
+                    if (questionType === "NUMERIC") {
+                        document.getElementById("IntegerQuestion").style.display = "none";
+                        document.getElementById("BooleanQuestion").style.display = "none";
+                        document.getElementById("NumericQuestion").style.display = "block";
+                        document.getElementById("MCQuestion").style.display = "none";
+                        document.getElementById("TextQuestion").style.display = "none";
+                    }
+
+                    if (questionType === "MCQ") {
+                        document.getElementById("IntegerQuestion").style.display = "none";
+                        document.getElementById("BooleanQuestion").style.display = "none";
+                        document.getElementById("NumericQuestion").style.display = "none";
+                        document.getElementById("MCQuestion").style.display = "block";
+                        document.getElementById("TextQuestion").style.display = "none";
+                    }
+
+                    if (questionType === "TEXT") {
+                        document.getElementById("IntegerQuestion").style.display = "none";
+                        document.getElementById("BooleanQuestion").style.display = "none";
+                        document.getElementById("NumericQuestion").style.display = "none";
+                        document.getElementById("MCQuestion").style.display = "none";
+                        document.getElementById("TextQuestion").style.display = "block";
+                    }
+
+
+                }
+            });
+    }
+
+    function saveAnswerInt ()
+    {
+
+        let input = document.getElementById("inputInt").value;
+
+        checkAnswer(input);
+    }
+
+    function saveAnswerBool ()
+    {
+
+        let input = document.getElementById("inputBool").checked;
+
+        checkAnswer(input);
+    }
+
+    function saveAnswerNum ()
+    {
+
+        let input = document.getElementById("inputNum").value;
+
+        checkAnswer(input);
+    }
+
+    function saveAnswerMC ()
+    {
+
+        let input = "Wrong";
+        let oneChecked = true;
+
+        if (document.getElementById("inputMCB").checked)
         {
-            alert("please enter a valid username");
+            oneChecked = false;
+        }
+
+        if (document.getElementById("inputMCC").checked)
+        {
+            oneChecked = false;
+        }
+
+        if (document.getElementById("inputMCD").checked)
+        {
+            oneChecked = false;
+        }
+
+        if (document.getElementById("inputMCA").checked && oneChecked)
+        {
+            input = "A";
+        }
+
+        checkAnswer(input);
+    }
+
+    function saveAnswerText ()
+    {
+
+        let input = document.getElementById("inputTxt").value;
+
+        checkAnswer(input);
+    }
+
+    function checkAnswer(input)
+    {
+        console.log(getCookie("session"));
+        console.log(input);
+
+        fetch("https://codecyprus.org/th/api/answer?session=" + getCookie("session") + "&answer=" + input)
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+
+                console.log(jsonObject);
+
+
+                 if (jsonObject.correct && jsonObject.status === "OK")
+                 {
+                     alert("Well done!");
+
+                     score();
+
+
+                     getQuestion();
+                 }
+
+                 if (jsonObject.correct === false && jsonObject.status === "OK")
+                 {
+                     alert("Wrong answer please try again");
+
+                     score();
+                 }
+          });
+ }
+
+    function score()
+    {
+        fetch("https://codecyprus.org/th/api/score?session=" + getCookie("session"))
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+
+                if(jsonObject.status === "OK")
+                {
+                   document.getElementById("score").innerHTML = "Score: " + jsonObject.score;
+
+                   saveCookie("score", jsonObject.score);
+                }
+
+            });
+    }
+
+    function getLocation ()
+    {
+        if (navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(savePosition);
         }
 
         else
         {
-            ValidUsername = true;
+            alert("Geolocation is not supported by your browser.");
         }
     }
 
-    fetch("https://codecyprus.org/th/api/start?player=" + username + "&app=" + appName + "-app&treasure-hunt-id=" + getCookie("uuid" + [0]))
-        .then(response => response.json())
-        .then(jsonObject =>
-        {
+    function savePosition(position)
+    {
+        let latitude = (position.coords.latitude);
+        let longitude = (position.coords.longitude);
 
-            let sessionCode = jsonObject.session;
+        saveCookie("latitude", latitude);
+        saveCookie("longitude", longitude);
 
-            fetch("https://codecyprus.org/th/api/question?session=" + sessionCode)
-                .then(response => response.json())
-                .then(jsonObject => {
+        checkLocation(latitude, longitude);
+    }
 
-                    console.log(jsonObject);
+    function checkLocation(latitude, longitude)
+    {
+        fetch("https://codecyprus.org/th/api/location?session=" + getCookie("session") + "&latitude="+ latitude + "&longitude=" + longitude)
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
 
-                    questionType = jsonObject.questionType;
+                console.log(jsonObject);
 
+            });
 
-                    document.getElementById("Question").innerHTML = jsonObject.questionText;
+    }
 
+    function skipQuestion()
+    {
+        fetch("https://codecyprus.org/th/api/skip?session=" + getCookie("session"))
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+                score();
+                getQuestion();
+            });
+    }
 
-                    let answer = "";
-
-                    if (questionType === "INTEGER")
-                    {
-                        answer = "";
-                        answer = "<input type='number' name='Answer'>"
-                    }
-
-                    if (questionType === "BOOLEAN")
-                    {
-                        answer = "";
-                        answer = "<input type='checkbox' name='Answer'>"
-                    }
-
-                    if (questionType === "NUMERIC")
-                    {
-                        answer = "";
-                        answer = "<input type='number' name='Answer'>"
-                    }
-
-                    if (questionType === "MCQ")
-                    {
-                        answer = "";
-                        answer = "<input type='checkbox' name='Answer'>"
-                    }
-
-                    if (questionType === "TEXT")
-                    {
-                        answer = "";
-                        answer = "<input type='text' name='Answer'>"
-                    }
-
-                    document.getElementById("answerForm").innerHTML = answer;
-
-
-
-                });
-
-        });
+    Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error('No cameras found.');
+            alert("No cameras found.");
+        }
+    }).catch(function (e) {
+        console.error(e);
+    });
 
     function getCookie(cookieName)
     {
@@ -125,11 +364,14 @@
         return "";
     }
 
- function checkAnswer(input)
- {
-
- }
-
+    function saveCookie(cookieName, cookieValue)
+    {
+        let date = new Date();
+        let expireHours = 30;
+        date.setTime(date.getTime() + (expireHours * 60 * 60 * 1000));
+        let expires = "expires=" + date.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires;
+    }
 </script>
 
 </body>
