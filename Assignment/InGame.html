@@ -65,17 +65,26 @@
     <button type='button' id='skipButton' onclick='skipQuestion()'>Skip</button>
 </div>
 
-<video id="preview"></video>
+<br><br>
+
+<div id="qr" style="display: none">
+    <p id="qrScanned"></p>
+</div>
+
+<button type='button' id='qrButton' onclick='startQRScanner()'>QR</button>
+
+<video id="preview" style="display: none">
+    <div style="margin: 20px; padding: 20px; background-color: black; color: white; text-align: center;" id="content"></div>
+</video>
+
 
 <script type="text/javascript">
-
-
 
     let scanner = new Instascan.Scanner({video: document.getElementById("preview") });
 
     scanner.addListener('scan', function (content) {
         console.log(content);
-        //document.getElementById("content").innerHTML = content;
+        document.getElementById("qrScanned").innerHTML = content;
     });
 
     Instascan.Camera.getCameras().then(function (cameras) {
@@ -89,7 +98,14 @@
         console.error(e);
     });
 
+
+    function startQRScanner ()
+    {
+        document.getElementById("preview").style.display = "block";
+    }
+
     let questionType;
+
 
     getQuestion();
 
