@@ -96,7 +96,8 @@
 
     let scanner = new Instascan.Scanner({video: document.getElementById("preview")});
 
-    scanner.addListener('scan', function (content) {
+    scanner.addListener('scan', function (content)
+    {
         console.log(content);
     });
 
@@ -113,15 +114,8 @@
 
                 console.log(cameras.id);
 
-                if (result === "")
-                {
                     result = scanner.scan();
-                }
 
-                if (!(result === ""))
-                {
-                    scanner.stop();
-                }
             }
             else
             {
