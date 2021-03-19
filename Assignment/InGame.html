@@ -67,7 +67,7 @@
 </div>
 
 
-<button id="scanner" onclick="QRscanner ()">Scanner</button>
+<button type="button" id="scanner" onclick="QRscanner ()">Scanner</button>
 
 
 <video id="preview"></video>
@@ -81,7 +81,7 @@
     function QRscanner ()
     {
         let scanner = new Instascan.Scanner({video: document.getElementById("preview")});
-        
+
         scanner.addListener('scan', function (content) {
             console.log(content);
         });
