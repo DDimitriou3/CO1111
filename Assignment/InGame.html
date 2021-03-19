@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Stylesheet.css"/>
+    <script type="text/javascript" src="instascan.min.js"></script>
 
     <title>In Game</title>
 </head>
@@ -74,9 +75,9 @@
 
 
 
-<script type="text/javascript" src="instascan.min.js">
+<script type="text/javascript">
 
-    let scanner = new Instascan.Scanner(opts);
+    let scanner = new Instascan.Scanner({video: document.getElementById("preview")});
 
     scanner.addListener('scan', function (content) {
         console.log(content);
@@ -94,8 +95,6 @@
     }).catch(function (e) {
         console.error(e);
     });
-
-    scanner.start(camera);
 
     let questionType;
 
