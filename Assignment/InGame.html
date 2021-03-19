@@ -114,8 +114,15 @@
 
                 console.log(cameras.id);
 
+                if (result === "")
+                {
                     result = scanner.scan();
+                }
 
+                if (!(result === ""))
+                {
+                    scanner.stop();
+                }
             }
             else
             {
