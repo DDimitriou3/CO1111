@@ -225,3 +225,8 @@ a
     color: white;
     text-align: center;
 }
+
+#showButton, #hiddenVideo
+{
+    text-align: center;
+}
