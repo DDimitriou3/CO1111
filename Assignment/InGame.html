@@ -87,7 +87,7 @@
 
 </div>
 
-
+<p id="scanResult">something</p>
 
 
 <script type="text/javascript">
@@ -100,26 +100,34 @@
         console.log(content);
     });
 
-    Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-            scanner.start(cameras[0]);
-        } else {
-            console.error('No cameras found.');
-        }
-    }).catch(function (e) {
-        console.error(e);
-    });
-
     function QRscanner ()
     {
         document.getElementById("hiddenVideo").style.display = "block";
         document.getElementById("showButton").style.display = "none";
+
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 1) {
+                scanner.start(cameras[1]);
+            }
+            else
+            {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+
+        methods: {}
+
+        document.getElementById("scanResult").innerHTML = scanner.scan();
     }
 
     function QRscannerHide ()
     {
         document.getElementById("hiddenVideo").style.display = "none";
         document.getElementById("showButton").style.display = "block";
+
+        scanner.stop();
     }
 
 
