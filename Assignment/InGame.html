@@ -106,7 +106,7 @@
         document.getElementById("showButton").style.display = "none";
 
         Instascan.Camera.getCameras().then(function (cameras) {
-            if (cameras.length > 1) {
+            if (cameras.length > 0) {
                 scanner.start(cameras[1]);
             }
             else
@@ -116,8 +116,6 @@
         }).catch(function (e) {
             console.error(e);
         });
-
-        methods: {}
 
         document.getElementById("scanResult").innerHTML = scanner.scan();
     }
