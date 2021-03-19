@@ -67,11 +67,12 @@
 </div>
 
 
-<button type="button" id="scanner" onclick="QRscanner ()">Scanner</button>
+<button type="button" id="scanner" onclick="QRscanner()">Scanner</button>
 
 
-<video id="preview" style="display: none"></video>
-
+<div id="hiddenVideo" style="display: none">
+<video id="preview"></video>
+</div>
 
 
 
@@ -101,7 +102,7 @@
 
     function QRscanner ()
     {
-        document.getElementById("preview").style.display = "block";
+        document.getElementById("hiddenVideo").style.display = "block";
     }
 
     getQuestion();
