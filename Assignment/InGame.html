@@ -105,9 +105,23 @@
         document.getElementById("hiddenVideo").style.display = "block";
         document.getElementById("showButton").style.display = "none";
 
+        let result = "";
+
         Instascan.Camera.getCameras().then(function (cameras) {
             if (cameras.length > 0) {
-                scanner.start(cameras[1]);
+                scanner.start(cameras[0]);
+
+                console.log(cameras.id);
+
+                if (result === "")
+                {
+                    result = scanner.scan();
+                }
+
+                if (!(result === ""))
+                {
+                    scanner.stop();
+                }
             }
             else
             {
@@ -117,7 +131,7 @@
             console.error(e);
         });
 
-        document.getElementById("scanResult").innerHTML = scanner.scan();
+        document.getElementById("scanResult").innerHTML = result;
     }
 
     function QRscannerHide ()
