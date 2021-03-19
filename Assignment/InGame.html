@@ -121,7 +121,7 @@
         scanPeriod: 1
     };
 
-
+    let scanner = new Instascan.Scanner(opts);
 
 
 
@@ -129,8 +129,6 @@
 
     function QRscanner ()
     {
-
-        let scanner = new Instascan.Scanner(opts);
 
         scanner.addListener('scan', function(content)
         {
