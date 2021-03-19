@@ -215,3 +215,13 @@ a
 {
     text-decoration: none;
 }
+
+
+#preview
+{
+    margin: 20px;
+    padding: 20px;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
