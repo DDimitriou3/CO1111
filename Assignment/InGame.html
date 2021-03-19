@@ -71,7 +71,7 @@
 
 
 <div id="showButton" style="display: block">
-<button type="button" id="showScanner" onclick="QRscanner()">Scanner</button>
+    <button type="button" id="showScanner" onclick="QRscanner()">Scanner</button>
 </div>
 
 
@@ -79,9 +79,10 @@
 
 <div id="hiddenVideo" style="display: none">
 
-<button type="button" id="hideScanner" onclick="QRscannerHide()"></button>
+    <button type="button" id="hideScanner" onclick="QRscannerHide()">Stop Scanner</button>
 
-<video id="preview"></video>
+    <video id="preview"></video>
+
 </div>
 
 
@@ -118,8 +119,8 @@
 
     function QRscannerHide ()
     {
-        document.getElementById("hiddenVideo").style.display = "block";
-        document.getElementById("showButton").style.display = "none";
+        document.getElementById("hiddenVideo").style.display = "none";
+        document.getElementById("showButton").style.display = "block";
     }
 
     getQuestion();
