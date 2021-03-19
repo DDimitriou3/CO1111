@@ -67,10 +67,20 @@
 </div>
 
 
-<button type="button" id="scanner" onclick="QRscanner()">Scanner</button>
+
+
+
+<div id="showButton" style="display: block">
+<button type="button" id="showScanner" onclick="QRscanner()">Scanner</button>
+</div>
+
+
 
 
 <div id="hiddenVideo" style="display: none">
+
+<button type="button" id="hideScanner" onclick="QRscannerHide()"></button>
+
 <video id="preview"></video>
 </div>
 
@@ -103,6 +113,13 @@
     function QRscanner ()
     {
         document.getElementById("hiddenVideo").style.display = "block";
+        document.getElementById("showButton").style.display = "none";
+    }
+
+    function QRscannerHide ()
+    {
+        document.getElementById("hiddenVideo").style.display = "block";
+        document.getElementById("showButton").style.display = "none";
     }
 
     getQuestion();
