@@ -35,7 +35,7 @@
 <br>
 
 
-<a href="Lobby.html" style="text-decoration: none"><button type="button" class="block"> Start Button</button></a>
+<button type="button" class="block" onclick="getUsername()"> Start Button</button>
 <br>
 <br>
 
@@ -48,6 +48,41 @@
     <img src="pic5.jpg" alt="Slide 1" />
 </div>
 
+<script>
+
+
+    function getUsername ()
+    {
+        let ValidUsername = false;
+
+        while (!ValidUsername)
+        {
+            username = prompt("What is your username?", "");
+
+            if (username == null || username === "")
+            {
+                alert("please enter a valid username");
+            }
+
+            else
+            {
+                saveCookie("username", username);
+                ValidUsername = true;
+            }
+        }
+
+        window.location.href = "Lobby.html";
+    }
+
+    function saveCookie(cookieName, cookieValue)
+    {
+        let date = new Date();
+        let expireHours = 30;
+        date.setTime(date.getTime() + (expireHours * 60 * 60 * 1000));
+        let expires = "expires=" + date.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires;
+    }
+</script>
 
 </body>
 </html>

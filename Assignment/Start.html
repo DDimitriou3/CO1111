@@ -9,7 +9,7 @@
 <body>
 
 
-    <p id="StartButton" style="text-align: center">Loading...</p>
+    <p id="Loading" style="text-align: center">Loading...</p>
 
 
 <script>
@@ -26,6 +26,7 @@
             .then(response => response.json())
             .then(jsonObject =>
             {
+
                 if(jsonObject.status === "OK")
                 {
                     session=jsonObject.session;
@@ -42,6 +43,7 @@
                 {
                     let error=jsonObject.errorMessages[0];
                     alert(error);
+                    window.location.href = "Lobby.html";
                 }
 
             });

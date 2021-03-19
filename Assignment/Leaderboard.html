@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="Stylesheet.css"/>
     <title>Leaderboard</title>
 </head>
-<body>
+<body style="text-align: center">
 
+<button type="button"><a href="Leaderboard.html" id="refresh">Refresh</a></button>
 
 <h1 id="TreasureHuntName">Treasure Hunt Name</h1>
 
@@ -19,12 +20,18 @@
             <th>Time</th>
         </tr>
 
-        <tr>
+        <tr id="loading" style="display: block">
+            <td></td>
+            <td>Loading...</td>
             <td></td>
         </tr>
     </table>
 
+    <br>
+    <br>
 
+<button type="button"><a href="index.html" id="homeButton">Home</a></button>
+<button type="button"><a href="Lobby.html" id="playAgainButton">Play Again</a></button>
 
     <script>
 
@@ -60,6 +67,7 @@
                         "</tr>"
                 }
 
+                document.getElementById("loading").style.display = "none";
                 leaderboardTableElement.innerHTML += tableContents;
 
             });
