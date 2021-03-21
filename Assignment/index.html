@@ -7,15 +7,17 @@
 </head>
 <body class="home">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-<input type="button" value="Refresh">
+<button type="button"><a href="index.html" id="refresh">Refresh</a></button>
 <h1>Treasure Hunt Web App</h1>
 <br>
 <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
 
 <ul id="myMenu">
-    <li><a href="Home.html">Home</a></li>
+    <li><a href="index.html">Home</a></li>
     <li><a href="Help.html">Support</a></li>
     <li><a href="About%20Us.html">About Us</a></li>
+    <li><a href="Testing.html">Testing Page</a></li>
+    <li><a href="User%20Acceptance.html">User Acceptance</a></li>
 </ul>
 <br>
 <h3>What is Treasure Hunt App?</h3>
@@ -40,7 +42,7 @@
 <br>
 
 
-<button type="button" class="block">Start Button</button>
+<button type="button" class="block" onclick="getUsername()"> Start Button</button>
 <br>
 <br>
 
@@ -53,6 +55,41 @@
     <img src="pic5.jpg" alt="Slide 1" />
 </div>
 
+<script>
+
+
+    function getUsername ()
+    {
+        let ValidUsername = false;
+
+        while (!ValidUsername)
+        {
+            username = prompt("What is your username?", "");
+
+            if (username == null || username === "")
+            {
+                alert("please enter a valid username");
+            }
+
+            else
+            {
+                saveCookie("username", username);
+                ValidUsername = true;
+            }
+        }
+
+        window.location.href = "Lobby.html";
+    }
+
+    function saveCookie(cookieName, cookieValue)
+    {
+        let date = new Date();
+        let expireHours = 30;
+        date.setTime(date.getTime() + (expireHours * 60 * 60 * 1000));
+        let expires = "expires=" + date.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires;
+    }
+</script>
 
 </body>
 </html>

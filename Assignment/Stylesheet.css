@@ -209,3 +209,43 @@ img{
     text-align: center;
     font-weight: bold;
 }
+
+
+#leaderboardTable
+{
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 1px solid black
+}
+
+#skip
+{
+    text-align: center;
+}
+
+
+#refresh
+{
+    text-decoration: none;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+#preview
+{
+    width:300px;
+    height: 250px;
+}
+
+
+#UAtest
+{
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 2px solid black
+}

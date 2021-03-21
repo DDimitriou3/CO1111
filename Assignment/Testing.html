@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="TestingStyle.css"/>
+    <title>Testing</title>
+</head>
+
+<body style="text-align: center">
+
+        <h1>Testing Page</h1>
+
+        <button type="button"><a href="index.html">Home</a></button>
+
+        <h1>Question Type Test</h1>
+        <p> Press one of the <b>buttons</b> to spawn the question with the type you chose!</p>
+        <br>
+        <button type="button" id="boolButton" onclick="Boolean()">Boolean</button> <br><br>
+        <button type="button" id="mcqButton" onclick="MCQ()">Multiple Choice</button> <br><br>
+        <button type="button" id="intButton" onclick="INTEGER()">Integer</button> <br><br>
+        <button type="button" id="numButton" onclick="NUMERIC()">Numeric</button> <br><br>
+        <button type="button" id="txtButton" onclick="TEXT()">Text</button> <br>
+
+        <div id="questionVisibility" style="display: none">
+            <p id="Question">Loading...</p> <br>
+        </div>
+
+
+            <div id="IntegerQuestion" style="display: none">
+                <p>You pressed the <b>Integer</b> button!</p>
+                <br>
+                <input type='number' id='inputInt' name='Answer'> <br>
+            </div>
+
+            <div id="BooleanQuestion" style="display: none">
+                <p>You pressed the <b>Boolean</b> button!</p>
+                <br>
+                <input type='checkbox' id='inputBool' name='Answer'> <br>
+            </div>
+
+            <div id="NumericQuestion" style="display: none">
+                <p>You pressed the <b>Numeric</b> button!</p>
+                <br>
+                <input type='number' id='inputNum' name='Answer'> <br><br>
+            </div>
+
+            <div id="MCQuestion" style="display: none">
+                <p>You pressed the <b>Multiple Choice</b> button!</p>
+                <br>
+                <input type='checkbox' id='inputMCA' name='Answer'> A <br>
+                <input type='checkbox' id='inputMCB' name='Answer'> B <br>
+                <input type='checkbox' id='inputMCC' name='Answer'> C <br>
+                <input type='checkbox' id='inputMCD' name='Answer'> D <br><br>
+            </div>
+
+            <div id="TextQuestion" style="display: none">
+                <p>You pressed the <b>Text</b> button!</p>
+                <br>
+                <input type='text' id='inputTxt' name='Answer'> <br><br>
+            </div>
+
+        <br>
+        <br>
+
+
+        <h1>Skip Test</h1>
+        <p> Press one of the <b>buttons</b> to spawn a question that can be/ cannot be skipped</p>
+        <br>
+
+        <button type="button" id="skipButton" onclick="canBeSkipped()">Skippable</button> <br><br>
+        <button type="button" id="noskipButton" onclick="cannotBeSkipped()">Not skippable</button> <br><br>
+
+        <p id="skipText"></p>
+        <div id="skippable" style="display: none">
+        <button type="button">Skip</button>
+        </div>
+        <br>
+        <br>
+
+
+
+        <h1>Leaderboard Test</h1>
+        <p>Test the size input by adding a number below</p>
+        <p><b>Tip:</b> If you want it to be sorted, press the <b>Sort table</b> before setting the size</p>
+        <br>
+
+        Set table size: <input type="number" id="sizeNum">
+        <button type="button" id="sizeButton" onclick="getSize()">Set Size</button>
+        Sort table: <input type="checkbox" id="sorted">
+        <br>
+        <br>
+
+                <table id="leaderboardTable">
+                    <tr>
+                        <th><u>Player</u></th>
+                        <th><u>Score</u></th>
+                        <th><u>Time</u></th>
+                    </tr>
+                </table>
+
+        <br>
+        <br>
+
+
+        <h1>Loading Treasure Hunt Test</h1>
+        <p>By pressing the <b>Load Treasure Hunts Button</b> it should load the available servers</p>
+        <br>
+
+        <button type="button" onclick="loadTreasureHuntsTest()">Load Treasure Hunts</button>
+
+        <ul id="treasureHuntsTest">
+
+        </ul>
+
+<script>
+
+    function Boolean()
+    {
+        let input = "BOOLEAN";
+        spawnQuestion(input);
+    }
+
+    function MCQ()
+    {
+        let input = "MCQ";
+        spawnQuestion(input);
+    }
+
+    function INTEGER()
+    {
+        let input = "INTEGER";
+        spawnQuestion(input);
+    }
+
+    function NUMERIC()
+    {
+        let input = "NUMERIC";
+        spawnQuestion(input);
+    }
+
+    function TEXT()
+    {
+        let input = "TEXT";
+        spawnQuestion(input);
+    }
+
+    function spawnQuestion (input)
+    {
+        fetch("https://codecyprus.org/th/test-api/question?completed&question-type="+ input +"&can-be-skipped&requires-location")
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+                document.getElementById("questionVisibility").style.display = "block";
+                document.getElementById("Question").innerHTML = jsonObject.questionText;
+
+                if (input === "INTEGER") {
+                    document.getElementById("IntegerQuestion").style.display = "block";
+                    document.getElementById("BooleanQuestion").style.display = "none";
+                    document.getElementById("NumericQuestion").style.display = "none";
+                    document.getElementById("MCQuestion").style.display = "none";
+                    document.getElementById("TextQuestion").style.display = "none";
+                }
+
+                if (input === "BOOLEAN") {
+                    document.getElementById("IntegerQuestion").style.display = "none";
+                    document.getElementById("BooleanQuestion").style.display = "block";
+                    document.getElementById("NumericQuestion").style.display = "none";
+                    document.getElementById("MCQuestion").style.display = "none";
+                    document.getElementById("TextQuestion").style.display = "none";
+                }
+
+                if (input === "NUMERIC") {
+                    document.getElementById("IntegerQuestion").style.display = "none";
+                    document.getElementById("BooleanQuestion").style.display = "none";
+                    document.getElementById("NumericQuestion").style.display = "block";
+                    document.getElementById("MCQuestion").style.display = "none";
+                    document.getElementById("TextQuestion").style.display = "none";
+                }
+
+                if (input === "MCQ") {
+                    document.getElementById("IntegerQuestion").style.display = "none";
+                    document.getElementById("BooleanQuestion").style.display = "none";
+                    document.getElementById("NumericQuestion").style.display = "none";
+                    document.getElementById("MCQuestion").style.display = "block";
+                    document.getElementById("TextQuestion").style.display = "none";
+                }
+
+                if (input === "TEXT") {
+                    document.getElementById("IntegerQuestion").style.display = "none";
+                    document.getElementById("BooleanQuestion").style.display = "none";
+                    document.getElementById("NumericQuestion").style.display = "none";
+                    document.getElementById("MCQuestion").style.display = "none";
+                    document.getElementById("TextQuestion").style.display = "block";
+                }
+            });
+    }
+
+
+
+    function canBeSkipped ()
+    {
+        let input = true;
+        skipQuestion(input);
+    }
+
+    function cannotBeSkipped ()
+    {
+        let input = false;
+        skipQuestion(input);
+    }
+
+    function skipQuestion (input)
+    {
+        fetch("https://codecyprus.org/th/test-api/question?completed&question-type=MCQ&can-be-skipped="+ input +"&requires-location")
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+                if (jsonObject.canBeSkipped)
+                {
+                    document.getElementById("skipText").innerHTML = "This question <b>can be Skipped</b>";
+                    document.getElementById("skippable").style.display = "block";
+                }
+
+                if (!(jsonObject.canBeSkipped))
+                {
+                    document.getElementById("skipText").innerHTML = "This question <b>cannot be Skipped</b>";
+                    document.getElementById("skippable").style.display = "none";
+                }
+            });
+    }
+
+
+
+    function getSize ()
+    {
+        let input = document.getElementById("sizeNum").value;
+        let sorted = false;
+
+
+        if (document.getElementById("sorted").checked)
+        {
+            sorted = true;
+        }
+
+        sizeLeaderboard(input, sorted);
+    }
+
+    function sizeLeaderboard (input, sorted)
+    {
+        const title = "<tr>" +
+            "<td><u><b> Player </b></u></td>" +
+            "<td><u><b> Score </b></u></td>" +
+            "<td><u><b> Time </b></u></td>" +
+            "</tr>";
+
+
+        fetch("https://codecyprus.org/th/test-api/leaderboard?sorted="+ sorted +"&hasPrize&size="+ input)
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+
+                let leaderboardArray = jsonObject.leaderboard;
+
+                let tableContents = "";
+
+                for (let i=0; i<input; i++)
+                {
+                    const entry = leaderboardArray[i];
+                    const playerName = entry.player;
+                    const score = entry.score;
+                    const completionTime = entry.completionTime;
+
+                    tableContents += "<tr>" +
+                        "<td>"+ [i+1] + ") " + playerName + "</td>" +
+                        "<td>" + score + "</td>" +
+                        "<td>" + completionTime +"</td>" +
+                        "</tr>"
+                }
+
+                document.getElementById("leaderboardTable").innerHTML = title + tableContents;
+            });
+    }
+
+
+    function loadTreasureHuntsTest ()
+    {
+        fetch("https://codecyprus.org/th/test-api/list?number-of-ths=2")
+            .then(response => response.json())
+            .then(jsonObject =>
+            {
+
+                let treasureHuntsArray = jsonObject.treasureHunts;
+
+                let list = "";
+
+                for (let i=0; i<treasureHuntsArray.length; i++)
+                {
+
+
+                    list += "<li> <b> TreasureHunt " + [i+1] + "</b>:  " + treasureHuntsArray[i].name + "<br/></li>";
+
+                }
+
+                document.getElementById("treasureHuntsTest").innerHTML = list;
+
+
+            });
+    }
+
+</script>
+
+
+</body>
+
+</html>

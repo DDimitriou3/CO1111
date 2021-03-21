@@ -2,33 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Stylesheet.css"/>
     <title>Leaderboard</title>
 </head>
-<body>
+<body style="text-align: center">
 
+<button type="button"><a href="Leaderboard.html" id="refresh">Refresh</a></button>
 
 <h1 id="TreasureHuntName">Treasure Hunt Name</h1>
 
-    <table id="leaderboardTable" style="border: 1px solid black">
 
+    <table id="leaderboardTable">
         <tr>
             <th>Player</th>
             <th>Score</th>
-            <th>Completion Time</th>
+            <th>Time</th>
         </tr>
 
-        <tr>
+        <tr id="loading" style="display: block">
+            <td></td>
+            <td>Loading...</td>
             <td></td>
         </tr>
-
     </table>
+
+    <br>
+    <br>
+
+<button type="button"><a href="index.html" id="homeButton">Home</a></button>
 
     <script>
 
         const titleElement = document.getElementById("TreasureHuntName");
         const leaderboardTableElement = document.getElementById("leaderboardTable");
 
-        fetch("https://codecyprus.org/th/test-api/leaderboard?sorted&size=10")
+        fetch("https://codecyprus.org/th/api/leaderboard?session=" + getCookie("session") + "&sorted&limit=10")
             .then(response => response.json())
             .then(jsonObject =>
             {
@@ -46,16 +55,38 @@
                     const score = entry.score;
                     const completionTime = entry.completionTime;
 
+                    let time = new Date(completionTime);
+                    let timeMinutes = time.getMinutes();
+                    let timeSeconds = time.getSeconds();
+
                     tableContents += "<tr>" +
-                        "<td>" + playerName + "</td>" +
+                        "<td>"+ [i+1] + ") " + playerName + "</td>" +
                         "<td>" + score + "</td>" +
-                        "<td>" + completionTime + "</td>" +
+                        "<td>" + timeMinutes + ":"+ timeSeconds +"</td>" +
                         "</tr>"
                 }
 
+                document.getElementById("loading").style.display = "none";
                 leaderboardTableElement.innerHTML += tableContents;
 
             });
+
+        function getCookie(cookieName)
+        {
+            let name = cookieName + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
 
     </script>
 
