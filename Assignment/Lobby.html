@@ -26,35 +26,35 @@
 
 <script>
 
-    let username = getCookie("username");
+    let username = getCookie("username");                                                                               //It gets the username cookie
 
-    fetch("https://codecyprus.org/th/api/list")
+    fetch("https://codecyprus.org/th/api/list")                                                                         //It fetches the available treasure hunt
         .then(response => response.json())
         .then(jsonObject =>
         {
 
 
-            let treasureHuntsArray = jsonObject.treasureHunts;
+            let treasureHuntsArray = jsonObject.treasureHunts;                                                          //It gets the treasure hunts and saves them in an array
 
-            let list = "";
+            let list = "";                                                                                              //It gives an initial value to the list
 
             for (let i=0; i<treasureHuntsArray.length; i++)
             {
 
 
-                list += "<li>" +
+                list += "<li>" +                                                                                        //It saves the treasure hunt name and the button that starts the game in the list
                     treasureHuntsArray[i].name + "<br/>" +
                     "<a href='Start.html?uuid="+ treasureHuntsArray[i].uuid +"&username= "+ username +"'><button id='button'>Join Server" + [i+1] +"</button></a>" +
                     "</li>";
 
             }
 
-            document.getElementById("treasureHunts").innerHTML = list;
+            document.getElementById("treasureHunts").innerHTML = list;                                                  //It prints the loaded treasure hunt
 
 
         });
 
-    function getCookie(cookieName)
+    function getCookie(cookieName)                                                                                      //It gets a cookie that has been saved
     {
         let name = cookieName + "=";
         let decodedCookie = decodeURIComponent(document.cookie);

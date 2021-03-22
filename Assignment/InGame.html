@@ -21,65 +21,65 @@
 
 <br/>
 
-<form id="answerForm" style="text-align: center">
+<form id="answerForm" style="text-align: center">                                                                       <!--A form that contains all questions -->
 
     <div id="IntegerQuestion" style="display: none">
         <input type='number' id='inputInt' name='Answer'> <br><br>
-        <button type='button' id='submitButtonInt' onclick='saveAnswerInt()'>Confirm</button>
+        <button type='button' id='submitButtonInt' onclick='saveAnswerInt()'>Confirm</button>                           <!-- The question with input type integer and submission button-->
     </div>
 
     <div id="BooleanQuestion" style="display: none">
-        <input type='checkbox' id='inputBool' name='Answer'> <br><br>
+        <input type='checkbox' id='inputBool' name='Answer'> <br><br>                                                   <!-- The question with input type boolean and submission button-->
         <button type='button' id='submitButtonBool' onclick='saveAnswerBool()'>Confirm</button>
     </div>
 
     <div id="NumericQuestion" style="display: none">
-        <input type='number' id='inputNum' name='Answer'> <br><br>
+        <input type='number' id='inputNum' name='Answer'> <br><br>                                                      <!-- The question with input type numeric and submission button-->
         <button type='button' id='submitButtonNum' onclick='saveAnswerNum()'>Confirm</button>
     </div>
 
     <div id="MCQuestion" style="display: none">
         <input type='checkbox' id='inputMCA' name='Answer'> A <br>
-        <input type='checkbox' id='inputMCB' name='Answer'> B <br>
+        <input type='checkbox' id='inputMCB' name='Answer'> B <br>                                                      <!-- The question with input type multiple choice and submission button-->
         <input type='checkbox' id='inputMCC' name='Answer'> C <br>
         <input type='checkbox' id='inputMCD' name='Answer'> D <br><br>
         <button type='button' id='submitButtonMC' onclick='saveAnswerMC()'>Confirm</button>
     </div>
 
     <div id="TextQuestion" style="display: none">
-        <input type='text' id='inputTxt' name='Answer'> <br><br>
+        <input type='text' id='inputTxt' name='Answer'> <br><br>                                                        <!-- The question with input type text and submission button-->
         <button type='button' id='submitButtonTxt' onclick='saveAnswerText()'>Confirm</button>
     </div>
 
-    <div id="end" style="display: none">
+    <div id="end" style="display: none">                                                                                          <!--Game over text -->
         <p>Treasure Hunt Completed!</p>
     </div>
 </form>
 
 
 <br><br>
-<p id="score" style="text-align: center">Score: 0</p>
+<p id="score" style="text-align: center">Score: 0</p>                                                                                   <!--The current score of the player  -->
 
 <br><br>
 
 <div id="skip" style="display: none">
-    <button type='button' id='skipButton' onclick='skipQuestion()'>Skip</button>
+    <button type='button' id='skipButton' onclick='skipQuestion()'>Skip</button>                                        <!--The skip button -->
 </div>
 
 
 
 
 
-    <button type="button" id="showScanner" onclick="QRscanner()">Scanner</button>
+    <button type="button" id="showScanner" onclick="QRscanner()">Scanner</button>                                       <!-- The scanner button  when clicked its starts the Qr scanner function-->
 
 
 
     <div id="video" style="display: none">
-        <video id="preview"></video>
+        <video id="preview"></video>                                                                                    <!--The video for the cameras -->
     </div>
 
 
-<div style="margin: 20px; padding: 20px; background-color: black; color: white; text-align: center;" id="content"></div>
+<div style="margin: 20px; padding: 20px; background-color: black; color: white; text-align: center;" id="content"></div>                                                                                    <!--The result of the Qr scanner -->
 
 
 <script>
@@ -119,86 +119,86 @@
         // lower scan period increases CPU usage but makes scan response faster.
         // Default 1 (i.e. analyze every frame).
         scanPeriod: 1
-    };
+    };                                                                                                   //An object that contains code for the Qr scanner
 
-    let scanner = new Instascan.Scanner(opts);
+    let scanner = new Instascan.Scanner(opts);                                                                          //Initializes the Instascan for the scanner with the object opts
 
 
-    function QRscanner ()
+    function QRscanner ()                                                                                               //The function for the Qr scanner
     {
 
-        scanner.addListener('scan', function(content)
+        scanner.addListener('scan', function(content)                                                                   //Creates a listener for the scanner to scan any Qr codes and print it
         {
           document.getElementById("content").innerHTML = content;
         });
 
 
-        Instascan.Camera.getCameras().then(function (cameras) {
-            if (cameras.length > 0)
+        Instascan.Camera.getCameras().then(function (cameras) {                                                         //Initializes a search for cameras on the device
+            if (cameras.length > 0)                                                                                     //An if with the amount of cameras found
             {
-                scanner.start(cameras[0]);
+                scanner.start(cameras[0]);                                                                              //Starts the scanner with the first camera
 
-                let video = document.getElementById("video");
+                let video = document.getElementById("video");                                                           //Prints the camera output on the screen
 
-                if (video.style.display === "none")
+                if (video.style.display === "none")                                                                     //If the video is hidden then it will show it on the screen
                 {
                     video.style.display = "block";
                 }
 
                 else
                 {
-                        video.style.display = "none";
+                        video.style.display = "none";                                                                   //If the video is shown then it will hide it
                 }
 
 
             }
             else
             {
-                console.error('No cameras found.');
+                console.error('No cameras found.');                                                                     //If cameras not found it alerts the player
                 alert("No cameras found.");
             }
-        }).catch(function (e) {
+        }).catch(function (e) {                                                                                         //Catches the error and shows it on the console
             console.error(e);
         });
 
     }
 
 
-    getQuestion();
+    getQuestion();                                                                                                      //Starts the first question
 
     function getQuestion ()
     {
-        fetch("https://codecyprus.org/th/api/question?session=" + getCookie("session"))
+        fetch("https://codecyprus.org/th/api/question?session=" + getCookie("session"))                                  //It fetches the questions with the current session cookie
             .then(response => response.json())
             .then(jsonObject => {
 
-                if (jsonObject.completed)
+                if (jsonObject.completed)                                                                               //If the game is completed it takes the player to the leaderboard
                 {
                     window.location.href = "Leaderboard.html";
                 }
 
                 if (!(jsonObject.completed))
                 {
-                    setInterval(getLocation, 10000);
+                    setInterval(getLocation, 10000);                                                                    //It updates the geoLocation every 30 seconds (10000 milliseconds )
 
-                    questionType = jsonObject.questionType;
+                    questionType = jsonObject.questionType;                                                             //Gets the current question type
 
-                    document.getElementById("Question").innerHTML = jsonObject.questionText;
+                    document.getElementById("Question").innerHTML = jsonObject.questionText;                            //Prints the question on the screen
 
-                    if (jsonObject.canBeSkipped)
+                    if (jsonObject.canBeSkipped)                                                                        //If the question can be skipped it shows the skip button
                     {
                         document.getElementById("skip").style.display = "block";
                     }
 
                     if (!(jsonObject.canBeSkipped))
                     {
-                        document.getElementById("skip").style.display = "none";
+                        document.getElementById("skip").style.display = "none";                                         //If the question can not be skipped it removes the skip button
                     }
 
                     if (questionType === "INTEGER") {
                         document.getElementById("IntegerQuestion").style.display = "block";
                         document.getElementById("BooleanQuestion").style.display = "none";
-                        document.getElementById("NumericQuestion").style.display = "none";
+                        document.getElementById("NumericQuestion").style.display = "none";                               //If the question type is integer it shows the integer submission and removes the other submissions
                         document.getElementById("MCQuestion").style.display = "none";
                         document.getElementById("TextQuestion").style.display = "none";
                     }
@@ -206,7 +206,7 @@
                     if (questionType === "BOOLEAN") {
                         document.getElementById("IntegerQuestion").style.display = "none";
                         document.getElementById("BooleanQuestion").style.display = "block";
-                        document.getElementById("NumericQuestion").style.display = "none";
+                        document.getElementById("NumericQuestion").style.display = "none";                              //If the question type is boolean it shows the boolean submission and removes the other submissions
                         document.getElementById("MCQuestion").style.display = "none";
                         document.getElementById("TextQuestion").style.display = "none";
                     }
@@ -214,7 +214,7 @@
                     if (questionType === "NUMERIC") {
                         document.getElementById("IntegerQuestion").style.display = "none";
                         document.getElementById("BooleanQuestion").style.display = "none";
-                        document.getElementById("NumericQuestion").style.display = "block";
+                        document.getElementById("NumericQuestion").style.display = "block";                             //If the question type is numeric it shows the numeric submission and removes the other submissions
                         document.getElementById("MCQuestion").style.display = "none";
                         document.getElementById("TextQuestion").style.display = "none";
                     }
@@ -222,14 +222,14 @@
                     if (questionType === "MCQ") {
                         document.getElementById("IntegerQuestion").style.display = "none";
                         document.getElementById("BooleanQuestion").style.display = "none";
-                        document.getElementById("NumericQuestion").style.display = "none";
+                        document.getElementById("NumericQuestion").style.display = "none";                              //If the question type is multiple choice it shows the multiple choice submission and removes the other submissions
                         document.getElementById("MCQuestion").style.display = "block";
                         document.getElementById("TextQuestion").style.display = "none";
                     }
 
                     if (questionType === "TEXT") {
                         document.getElementById("IntegerQuestion").style.display = "none";
-                        document.getElementById("BooleanQuestion").style.display = "none";
+                        document.getElementById("BooleanQuestion").style.display = "none";                              //If the question type is text it shows the text submission and removes the other submissions
                         document.getElementById("NumericQuestion").style.display = "none";
                         document.getElementById("MCQuestion").style.display = "none";
                         document.getElementById("TextQuestion").style.display = "block";
@@ -243,7 +243,7 @@
     function saveAnswerInt ()
     {
 
-        let input = document.getElementById("inputInt").value;
+        let input = document.getElementById("inputInt").value;                                                          //It saves the input of the player of type integer and sends it to check the answer
 
         checkAnswer(input);
     }
@@ -251,7 +251,7 @@
     function saveAnswerBool ()
     {
 
-        let input = document.getElementById("inputBool").checked;
+        let input = document.getElementById("inputBool").checked;                                                       //It checks if the checkbox is ticked  and sends it to get checked
 
         checkAnswer(input);
     }
@@ -259,7 +259,7 @@
     function saveAnswerNum ()
     {
 
-        let input = document.getElementById("inputNum").value;
+        let input = document.getElementById("inputNum").value;                                                          //It saves the input of the player of type numeric and sends it to check the answer
 
         checkAnswer(input);
     }
@@ -267,7 +267,7 @@
     function saveAnswerMC ()
     {
 
-        let input = "Wrong";
+        let input = "Wrong";                                                                                            //Default input
         let oneChecked = true;
 
         if (document.getElementById("inputMCB").checked)
@@ -277,8 +277,8 @@
 
         if (document.getElementById("inputMCC").checked)
         {
-            oneChecked = false;
-        }
+            oneChecked = false;                                                                                         //It checks which checkboxes are ticked and if the checkbox A is the only one ticked it sends it to get checked
+        }                                                                                                               //if not it will return the default input
 
         if (document.getElementById("inputMCD").checked)
         {
@@ -296,38 +296,34 @@
     function saveAnswerText ()
     {
 
-        let input = document.getElementById("inputTxt").value;
+        let input = document.getElementById("inputTxt").value;                                                          //It saves the input of the player of type text and sends it to check the answer
 
         checkAnswer(input);
     }
 
     function checkAnswer(input)
     {
-        console.log(getCookie("session"));
-        console.log(input);
 
-        fetch("https://codecyprus.org/th/api/answer?session=" + getCookie("session") + "&answer=" + input)
+        fetch("https://codecyprus.org/th/api/answer?session=" + getCookie("session") + "&answer=" + input)              //It fetches the answer correction with the session cookie and the player input
             .then(response => response.json())
             .then(jsonObject =>
             {
-
-                console.log(jsonObject);
 
 
                  if (jsonObject.correct && jsonObject.status === "OK")
                  {
                      alert("Well done!");
 
-                     score();
-
+                     score();                                                                                           //If the answer is correct and the status okay it alerts the player that the question is correct
+                                                                                                                        //it then calls the score function and then it gets the next question
 
                      getQuestion();
                  }
 
                  if (jsonObject.correct === false && jsonObject.status === "OK")
                  {
-                     alert("Wrong answer please try again");
-
+                     alert("Wrong answer please try again");                                                            //If the answer is wrong and the status okay it alerts the player that the question is wrong
+                                                                                                                        //it then calls the score function
                      score();
                  }
           });
@@ -335,14 +331,14 @@
 
     function score()
     {
-        fetch("https://codecyprus.org/th/api/score?session=" + getCookie("session"))
+        fetch("https://codecyprus.org/th/api/score?session=" + getCookie("session"))                                    //It fetches the updated score with the session cookie
             .then(response => response.json())
             .then(jsonObject =>
             {
 
                 if(jsonObject.status === "OK")
                 {
-                   document.getElementById("score").innerHTML = "Score: " + jsonObject.score;
+                   document.getElementById("score").innerHTML = "Score: " + jsonObject.score;                           //If status okay it prints the updated score and updates the score cookie
 
                    saveCookie("score", jsonObject.score);
                 }
@@ -354,34 +350,34 @@
     {
         if (navigator.geolocation)
         {
-            navigator.geolocation.getCurrentPosition(savePosition);
+            navigator.geolocation.getCurrentPosition(savePosition);                                                     //It uses the navigator to get the current position and calls the save position function
         }
 
         else
         {
-            alert("Geolocation is not supported by your browser.");
+            alert("Geolocation is not supported by your browser.");                                                     //If the location has been denied it prints an alert
         }
     }
 
     function savePosition(position)
     {
-        let latitude = (position.coords.latitude);
-        let longitude = (position.coords.longitude);
+        let latitude = (position.coords.latitude);                                                                      //It gets the latitude of the player
+        let longitude = (position.coords.longitude);                                                                    //It gets the longitude of the player
 
-        saveCookie("latitude", latitude);
+        saveCookie("latitude", latitude);                                                                               //It saves the latitude and longitude as a cookie
         saveCookie("longitude", longitude);
 
-        checkLocation(latitude, longitude);
+        checkLocation(latitude, longitude);                                                                             //It calls the check location function with the latitude and longitude
     }
 
     function checkLocation(latitude, longitude)
     {
         fetch("https://codecyprus.org/th/api/location?session=" + getCookie("session") + "&latitude="+ latitude + "&longitude=" + longitude)
             .then(response => response.json())
-            .then(jsonObject =>
+            .then(jsonObject =>                                                                                         //It fetches the updated location with the session cookie the latitude and longitude
             {
 
-                console.log(jsonObject);
+                console.log(jsonObject);                                                                                //It shows if the location has been updated in the console
 
             });
 
@@ -389,16 +385,16 @@
 
     function skipQuestion()
     {
-        fetch("https://codecyprus.org/th/api/skip?session=" + getCookie("session"))
+        fetch("https://codecyprus.org/th/api/skip?session=" + getCookie("session"))                                     //It fetches the skip using the session cookie
             .then(response => response.json())
             .then(jsonObject =>
             {
-                score();
+                score();                                                                                                //It calls the score function and gets the next question
                 getQuestion();
             });
     }
 
-    function getCookie(cookieName)
+    function getCookie(cookieName)                                                                                      //It gets a cookie that has been saved
     {
         let name = cookieName + "=";
         let decodedCookie = decodeURIComponent(document.cookie);
@@ -415,7 +411,7 @@
         return "";
     }
 
-    function saveCookie(cookieName, cookieValue)
+    function saveCookie(cookieName, cookieValue)                                                                        //It creates a cookie
     {
         let date = new Date();
         let expireHours = 30;

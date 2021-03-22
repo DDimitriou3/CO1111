@@ -7,20 +7,21 @@
 </head>
 <body class="home">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-<button type="button"><a href="index.html" id="refresh">Refresh</a></button>
+<button type="button"><a href="index.html" id="refresh">Refresh</a></button>            <!--  Refresh button-->
 <h1>Treasure Hunt Web App</h1>
 <br>
 <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
 
 <ul id="myMenu">
-    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html">Home</a></li>             <!-- A menu for the player  -->
     <li><a href="Help.html">Support</a></li>
     <li><a href="About%20Us.html">About Us</a></li>
     <li><a href="Testing.html">Testing Page</a></li>
     <li><a href="User%20Acceptance.html">User Acceptance</a></li>
 </ul>
 <br>
-<h3>What is Treasure Hunt App?</h3>
+<h3>What is Treasure Hunt App?</h3>          <!--  Some info about the treasure hunt!-->
+
 <p5>Treasure Hunt App is an online quiz where the answers depend on your finding information at specific locations using the answers from the quiz and the QR codes.Players must be at specific locations to use the QR codes to help them contain the questions. Every correct answer closer to the Treasure. After competing the questions and the other findings during the hunt all the information must be collected to find the Treasure and the end of the game.
 </p5>
 <p6>Treasure Hunt is an online quiz game which the organisers prepare a specific list of missions or quizzes, which the participants seek to gather or complete all the quizzes and find the right QR code to "unlock" more quizzes to get ahead of their goal .Usually the participants work in small groups ,maximum of 5 people ,but the rules allow individuals to participate but this makes them more difficult to win.The goal is to complete the list or to complete the most of the quizzes.In variations of the game ,players scan QR codes to find new challenges,answer multiple choice questions ,numerical questions,boolean questions and some textual questions with the theme topic of the hunt.</p6>
@@ -31,7 +32,7 @@
 <p10>The <strong>questions</strong>  that will be found on the quiz are questions with main aim of general knowledge or some arithmetic equations to trick the "good ones".When more questions are solving the difficulty level of the game increases through the questions or even the answers are a bit tricky ,with two or even three correct answers.</p10>
 <br><br>
 <br>
-<h7>What  is the purpose of building an app like this ?</h7>
+<h7>What  is the purpose of building an app like this ?</h7>      <!-- Purpose of game!-->
 <br><br>
 <br>
 <p17>The main purpose is to build an interactive web application for everyone. It is a real life quiz using an existing API that gives them the chance to communicate with a server where all the data is stored.</p17>
@@ -42,12 +43,12 @@
 <br>
 
 
-<button type="button" class="block" onclick="getUsername()"> Start Button</button>
+<button type="button" class="block" onclick="getUsername()"> Start Button</button>      <!-- Start Button-->
 <br>
 <br>
 <br>
 
-<div class="fling-minislide">
+<div class="fling-minislide">                               <!--Small slideshow of treasure hunts pictures -->
     <img src="pic2.jpg" alt="Slide 4" />
     <img src="treasure-hunting-map.jpg" alt="Slide 3" />
 
@@ -59,7 +60,7 @@
 <script>
 
 
-    function getUsername ()
+    function getUsername ()                                       //A function that prompts the player to give a name .
     {
         let ValidUsername = false;
 
@@ -67,22 +68,22 @@
         {
             username = prompt("What is your username?", "");
 
-            if (username == null || username === "")
+            if (username == null || username === "")                //If the name is null or empty it will alert the player to put a new name!
             {
                 alert("please enter a valid username");
             }
 
-            else
+            else                                                // If the name is correct ,it creates a cookie and makes valid username true to stop the loop .
             {
                 saveCookie("username", username);
                 ValidUsername = true;
             }
         }
 
-        window.location.href = "Lobby.html";
+        window.location.href = "Lobby.html";                    //When the loop is done it goes to the lobby page.
     }
 
-    function saveCookie(cookieName, cookieValue)
+    function saveCookie(cookieName, cookieValue)                //A function that saves a cookie
     {
         let date = new Date();
         let expireHours = 30;

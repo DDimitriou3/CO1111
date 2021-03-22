@@ -14,42 +14,42 @@
 
 <script>
 
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(location.search);                                                                //Creates a parameter that gets the URL
 
-    const appName = "Straw-Hats Treasure Adventure";
+    const appName = "Straw-Hats Treasure Adventure";                                                                    //The app name of the game
 
-    let username = params.get("username");
-    let uuid = params.get("uuid");
+    let username = params.get("username");                                                                              //It gets the username from the URL using the parameter
+    let uuid = params.get("uuid");                                                                                      //It gets the uuid from the URL using the parameter
     let session;
 
-        fetch("https://codecyprus.org/th/api/start?player=" + username + "&app=" + appName + "-app&treasure-hunt-id=" + uuid)
+    fetch("https://codecyprus.org/th/api/start?player=" + username + "&app=" + appName + "-app&treasure-hunt-id=" + uuid) //It fetches the session with the username,appname and uuid
             .then(response => response.json())
             .then(jsonObject =>
             {
 
                 if(jsonObject.status === "OK")
                 {
-                    session=jsonObject.session;
+                    session=jsonObject.session;                                                                         //It saves the session
 
                     saveCookie("username", username);
                     saveCookie("uuid", uuid);
-                    saveCookie("session", session);
+                    saveCookie("session", session);                                                                     //If the status is okay, it creates a cookie for the username,uuid,session and appname
                     saveCookie("appName", appName);
 
-                    window.location.href = "InGame.html";
+                    window.location.href = "InGame.html";                                                               //It takes the player to the game
                 }
 
                 else
                 {
                     let error=jsonObject.errorMessages[0];
-                    alert(error);
+                    alert(error);                                                                                       //If the status is not okay it alert the player with an error and takes them back to the lobby page
                     window.location.href = "Lobby.html";
                 }
 
             });
 
 
-    function saveCookie(cookieName, cookieValue)
+    function saveCookie(cookieName, cookieValue)                                                                        //It creates a cookie
     {
         let date = new Date();
         let expireHours = 30;

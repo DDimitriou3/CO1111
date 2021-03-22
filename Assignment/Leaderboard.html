@@ -8,12 +8,12 @@
 </head>
 <body class="Leaderboard">
 
-<button type="button"><a href="Leaderboard.html" id="refresh">Refresh</a></button>
+<button type="button"><a href="Leaderboard.html" id="refresh">Refresh</a></button>  <!--Refresh button -->
 
 <h1 id="TreasureHuntName">Treasure Hunt Name</h1>
 
 
-    <table id="leaderboardTable">
+    <table id="leaderboardTable">          <!--The titles of the leaderboard -->
         <tr>
             <th>Player</th>
             <th>Score</th>
@@ -30,48 +30,48 @@
     <br>
     <br>
 
-<button type="button"><a href="index.html" id="homeButton">Home</a></button>
+<button type="button"><a href="index.html" id="homeButton">Home</a></button>      <!--A home button that returns the player to the home page -->
 
     <script>
 
-        const titleElement = document.getElementById("TreasureHuntName");
-        const leaderboardTableElement = document.getElementById("leaderboardTable");
+        const titleElement = document.getElementById("TreasureHuntName");                   //Gets the default treasure hunt name
+        const leaderboardTableElement = document.getElementById("leaderboardTable");       //Gets  the first elements of the table
 
-        fetch("https://codecyprus.org/th/api/leaderboard?session=" + getCookie("session") + "&sorted&limit=10")
-            .then(response => response.json())
+        fetch("https://codecyprus.org/th/api/leaderboard?session=" + getCookie("session") + "&sorted&limit=10")         //It fetches the leaderboard using the session cookie and makes it sorted and limits to 10 players
+            .then(response => response.json())                                                                          //It saves the leaderboard to a json object
             .then(jsonObject =>
             {
 
 
-                titleElement.innerText = jsonObject.treasureHuntName;
-                const leaderboardArray = jsonObject.leaderboard;
+                titleElement.innerText = jsonObject.treasureHuntName;                                                   //It overwrites the default treasure hunt name, with the current treasure hunt name
+                const leaderboardArray = jsonObject.leaderboard;                                                        //It gets the leaderboard from the Json object
 
-                let tableContents = "";
+                let tableContents = "";                                                                                 //We give an initial value to the table contents
 
                 for (let i=0; i<leaderboardArray.length; i++)
                 {
-                    const entry = leaderboardArray[i];
-                    const playerName = entry.player;
-                    const score = entry.score;
-                    const completionTime = entry.completionTime;
+                    const entry = leaderboardArray[i];                                                                  //It saves the position of the player
+                    const playerName = entry.player;                                                                    //It saves the name of the player
+                    const score = entry.score;                                                                          //It saves the score of the player
+                    const completionTime = entry.completionTime;                                                        //It saves the completion time of the player
 
                     let time = new Date(completionTime);
-                    let timeMinutes = time.getMinutes();
+                    let timeMinutes = time.getMinutes();                                                                //It converts the completion time to minutes and seconds
                     let timeSeconds = time.getSeconds();
 
                     tableContents += "<tr>" +
                         "<td>"+ [i+1] + ") " + playerName + "</td>" +
-                        "<td>" + score + "</td>" +
+                        "<td>" + score + "</td>" +                                                                      //It saves the new leaderboard into table contents
                         "<td>" + timeMinutes + ":"+ timeSeconds +"</td>" +
                         "</tr>"
                 }
 
-                document.getElementById("loading").style.display = "none";
-                leaderboardTableElement.innerHTML += tableContents;
+                document.getElementById("loading").style.display = "none";                                              //It hides the loading text
+                leaderboardTableElement.innerHTML += tableContents;                                                     //It prints the new leaderboard
 
             });
 
-        function getCookie(cookieName)
+        function getCookie(cookieName)                                                                                  //It gets a saved cookie
         {
             let name = cookieName + "=";
             let decodedCookie = decodeURIComponent(document.cookie);
